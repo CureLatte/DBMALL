@@ -7,7 +7,7 @@ from user.models import User
 
 class Category(models.Model):
     subject = models.CharField(max_length=1000)
-    print('test')
+
     def __str__(self):
         return f'{self.subject}'
 
