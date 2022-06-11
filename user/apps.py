@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class Week1Config(AppConfig):
+class UserConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'week1'
+    name = 'user'
