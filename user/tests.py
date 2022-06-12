@@ -1,14 +1,11 @@
 from django.test import TestCase
 import datetime
-from user.models import User
-
-
-# Create your tests here.
 from blog.views import BlogMakeView
 
 
 class TestBlogMake(TestCase):
     def test_blog_make_view_post(self):
+        from user.models import User
         user = User.objects.create(
             username='user1',
             fullname='user1',
@@ -20,7 +17,7 @@ class TestBlogMake(TestCase):
 
         user.save()
 
-        user.login()
+
         request = {
             'user' : user,
             "title": "이글의 카테고리는 파이썬, 자바",
