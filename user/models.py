@@ -29,9 +29,9 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     username = models.CharField("사용자 계정", max_length=20, unique=True)
-    email = models.EmailField("이메일 주소", max_length=100)
+    email = models.EmailField("이메일 주소", max_length=100, null=True)
     password = models.CharField("비밀번호", max_length=60)
-    fullname = models.CharField("이름", max_length=20)
+    fullname = models.CharField("이름", max_length=20, null=True)
     join_date = models.DateTimeField("가입일", auto_now_add=True)
 
     # is_active가 False일 경우 계정이 비활성화됨

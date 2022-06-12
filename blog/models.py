@@ -13,6 +13,7 @@ class Category(models.Model):
 
 
 class Article(models.Model):
+    title = models.CharField(max_length=100, default='')
     writer = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.CharField(max_length=1000)
     category = models.ManyToManyField(Category)
