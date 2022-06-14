@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 import json
 from blog.models import Article
 from user.models import User, UserProfile
+from user.serializer import UserSerializer
 
 
 class UserSignupView(APIView):
@@ -139,6 +140,9 @@ class UserDetailView(APIView):
         return JsonResponse(response_data)
 
 
-
-
+class UserInfoView(APIView):
+    def get(self, request):
+        user = request.user
+        serializer = UserSerializer(user).data
+        return JsonResponse(serializer, status=status.HTTP_200_OK)
 
