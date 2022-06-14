@@ -24,3 +24,10 @@ class Article(models.Model):
         else:
             cut = self.content
         return f'{cut}'
+
+
+class Comment(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    writer = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.CharField(max_length=1000)
+    created_at = models.DateTimeField(auto_created=True)
