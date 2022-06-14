@@ -26,7 +26,6 @@ class BlogMakeView(APIView):
         categories = request.data.get('category')
         categories_list = []
         for category in categories:
-            print(category)
             categories_list.append(Category.objects.get(subject=category).pk)
 
         content = request.data.get('content')
