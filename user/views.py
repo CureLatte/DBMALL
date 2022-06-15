@@ -1,13 +1,8 @@
 from django.contrib.auth import authenticate, login, logout
-from django.core.exceptions import FieldError
-from django.db import IntegrityError
-from django.db.models import Model
 from django.http import JsonResponse
-from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-import json
 from blog.models import Article
 from user.models import User, UserProfile
 from user.serializer import UserSerializer
