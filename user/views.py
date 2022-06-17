@@ -83,7 +83,7 @@ class UserLoginView(APIView):
 
 
 # 사용자가 작성한 프로필, 게시글 보기
-class UserDetailView(APIView):
+class UserMyPageView(APIView):
     # GET 요청
     def get(self, request):
         # 로그인 된 사용자
@@ -131,9 +131,22 @@ class UserDetailView(APIView):
         return JsonResponse(response_data)
 
 
-class UserInfoView(APIView):
-    def get(self, request):
-        user = request.user
-        serializer = UserSerializer(user).data
-        return JsonResponse(serializer, status=status.HTTP_200_OK)
+class UserDetailView(APIView):
+    def get(self, request, pk):
+        user = User.objects.filter(pk=pk)
 
+        if user.exists() is False:
+            return JsonResponse({'message': '해당 유저가 없습니다.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        user_serializer = UserSerializer(user.first())
+
+        return JsonResponse(user_serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, pk):
+        user = User.objects.filter(pk=pk)
+
+        if user.exists() is False:
+            return JsonResponse({'message': '해당 유저가 없습니다.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        user_serializer = UserSerializer(user.first(), data=request.data, partial=True)
+        return JsonResponse(user_serializer.data, status=status.HTTP_200_OK)
