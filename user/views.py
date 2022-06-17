@@ -76,11 +76,7 @@ class UserLoginView(APIView):
         login(request, user)
         return Response({"message": "로그인 성공!!"}, status=status.HTTP_200_OK)
 
-
-# 로그아웃 View
-class UserLogoutView(APIView):
-    # GET 요청
-    def get(self, request):
+    def delete(self, request):
         user = request.user
         logout(request)
         return JsonResponse({'message': f'{user.username}님이 Logout했습니다. '})
