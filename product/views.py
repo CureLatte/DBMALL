@@ -2,8 +2,8 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.shortcuts import render
 from rest_framework.views import APIView
-from product.serializer import EventSerializer
-from product.models import Event
+from product.serializer import EventSerializer, ProductSerializer
+from product.models import Event, Product
 from rest_framework import status
 from django.utils import timezone
 
@@ -22,7 +22,7 @@ class EventView(APIView):
             event_serializer.save()
             return JsonResponse({'message': '정상'}, status=status.HTTP_200_OK)
         else:
-            return JsonResponse(event_serializer.errors(), status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse(event_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # 이벤트 수정 ( pk를 받아야됨 )
     def put(self, request):
@@ -38,7 +38,7 @@ class EventView(APIView):
             event_serializer.save()
             return JsonResponse({'message': '정상'}, status=status.HTTP_200_OK)
         else:
-            return JsonResponse(event_serializer.errors(), safe=False, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse(event_serializer.errors, safe=False, status=status.HTTP_400_BAD_REQUEST)
 
 
 class EventDetailView(APIView):
@@ -71,3 +71,17 @@ class EvnetNowView(APIView):
         event_serializer = EventSerializer(events, many=True)
         return JsonResponse(event_serializer.data, safe=False, status=status.HTTP_200_OK)
 
+
+class ProductView(APIView):
+    def get(self, request):
+        products = Product.objects.all()
+        product_serializer = ProductSerializer(products, many=True)
+        return JsonResponse(product_serializer.data, status=status.HTTP_200_OK, safe=False)
+
+    def post(self, request):
+        print(request.data)
+        product_serializer = ProductSerializer(data=request.data)
+        if product_serializer.is_valid() is False:
+            return JsonResponse(product_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        product_serializer.save()
+        return JsonResponse({'message': '성공!'}, status=status.HTTP_200_OK)
