@@ -44,6 +44,7 @@ class ProductSerializer(serializers.ModelSerializer):
         print(f'data: {data}')
         expose_time = data.get('expose_end', None)
 
+        # update 시 해당 validation 사용 안함 ( expose_time 가 들어 오지 않았을 때 )
         if expose_time is None:
             return data
 
