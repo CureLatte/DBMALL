@@ -39,10 +39,15 @@ class EventSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-
     def validate(self, data):
         print('validate!')
-        if data.get('expose_end', '') < timezone.now():
+        print(f'data: {data}')
+        expose_time = data.get('expose_end', None)
+
+        if expose_time is None:
+            return data
+
+        if expose_time <= timezone.now():
             raise serializers.ValidationError(
                 detail={'error': '노출 종료 일자는 현재 일자보다 이후여야 합니다. '}
             )
@@ -53,10 +58,25 @@ class ProductSerializer(serializers.ModelSerializer):
         product.save()
         created_at = product.created_at.strftime('%Y-%m-%d %H:%M:%S')
         desc = product.desc
-        desc += '\n' + created_at + '에 등록된 글입니다.'
+        desc += ' \n ' + created_at + '에 등록된 글입니다.'
         product.desc = desc
         product.save()
         return product
+
+    def update(self, instance, validated_data):
+        print(f'instance : {instance}')
+        print(f'product.update_at: {instance.update_at}')
+        print(f'validated-date : {validated_data}')
+
+        for key, value in validated_data.items():
+            print(f'when desc {instance.update_at}')
+            setattr(instance, key, value)
+
+        instance.save()
+        print(f'product.update_at: {instance.update_at}')
+        instance.desc = instance.update_at.strftime('%Y-%m-%d %H:%M:%S') + '에 수정 되었습니다 \n ' + instance.desc
+        instance.save()
+        return instance
 
     class Meta:
         model = Product

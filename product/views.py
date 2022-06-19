@@ -7,6 +7,8 @@ from product.models import Event, Product
 from rest_framework import status
 from django.utils import timezone
 
+from user.serializer import UserSerializer
+
 
 class EventView(APIView):
     # 전체 이벤트 보기
@@ -79,9 +81,30 @@ class ProductView(APIView):
         return JsonResponse(product_serializer.data, status=status.HTTP_200_OK, safe=False)
 
     def post(self, request):
-        print(request.data)
+        print(f'request: {request.data}')
         product_serializer = ProductSerializer(data=request.data)
         if product_serializer.is_valid() is False:
             return JsonResponse(product_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         product_serializer.save()
         return JsonResponse({'message': '성공!'}, status=status.HTTP_200_OK)
+
+
+class ProductDetailView(APIView):
+    def get(self, request, pk):
+        product = Product.objects.filter(pk=pk)
+        if product.exists() is False:
+            return JsonResponse({'message': '해당 Product가 없습니다.'}, status=status.HTTP_400_BAD_REQUEST)
+        product_serializer = ProductSerializer(product.first())
+        return JsonResponse(product_serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, pk):
+        product = Product.objects.filter(pk=pk)
+        if product.exists() is False:
+            return JsonResponse({'message': '해당 Product가 없습니다.'}, status=status.HTTP_400_BAD_REQUEST)
+        product_serializer = ProductSerializer(product.first(), data=request.data, partial=True)
+        if product_serializer.is_valid() is False:
+            return JsonResponse(product_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        product_serializer.save()
+
+        return JsonResponse({'message': '성공'}, status=status.HTTP_200_OK)

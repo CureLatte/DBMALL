@@ -19,4 +19,3 @@ class ArticleSerializer(serializers.ModelSerializer):
         model = Article
         fields = ['title', 'content', 'category', 'article_set_reverse']
 
-
