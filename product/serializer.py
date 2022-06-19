@@ -1,6 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
-from product.models import Event, Product
+from product.models import Event, Product, Review
 from django.utils import timezone
 from user.serializer import UserSerializer
 from user.models import User
@@ -64,16 +64,9 @@ class ProductSerializer(serializers.ModelSerializer):
         return product
 
     def update(self, instance, validated_data):
-        print(f'instance : {instance}')
-        print(f'product.update_at: {instance.update_at}')
-        print(f'validated-date : {validated_data}')
-
         for key, value in validated_data.items():
-            print(f'when desc {instance.update_at}')
             setattr(instance, key, value)
-
         instance.save()
-        print(f'product.update_at: {instance.update_at}')
         instance.desc = instance.update_at.strftime('%Y-%m-%d %H:%M:%S') + '에 수정 되었습니다 \n ' + instance.desc
         instance.save()
         return instance
@@ -81,3 +74,9 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['writer', 'thumbnail', 'desc', 'expose_end', 'cost', 'active']
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ['writer', 'product', 'content', 'grade']

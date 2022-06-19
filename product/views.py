@@ -2,8 +2,8 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.shortcuts import render
 from rest_framework.views import APIView
-from product.serializer import EventSerializer, ProductSerializer
-from product.models import Event, Product
+from product.serializer import EventSerializer, ProductSerializer, ReviewSerializer
+from product.models import Event, Product, Review
 from rest_framework import status
 from django.utils import timezone
 
@@ -108,3 +108,10 @@ class ProductDetailView(APIView):
         product_serializer.save()
 
         return JsonResponse({'message': '성공'}, status=status.HTTP_200_OK)
+
+
+class ReviewView(APIView):
+    def get(self, request):
+        reviews = Review.objects.all()
+        review_serializer = ReviewSerializer(reviews, many=True)
+        return JsonResponse(review_serializer.data, status=status.HTTP_200_OK, safe=False)
