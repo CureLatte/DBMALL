@@ -49,22 +49,14 @@ class ProductSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        print('create!')
-        user_pk = validated_data.pop('writer')
-        desc = validated_data.pop('desc')
-        created_at = validated_data.get('created_at', '')
-
-        desc += f'{created_at}에 등록된 상품 입니다.'
-
-        user = User.objects.filter(pk=user_pk)
-        print(user)
-        if user.exists() is False:
-            raise ObjectDoesNotExist
-
         product = Product(**validated_data)
-        product.writer = user
+        product.save()
+        created_at = product.created_at.strftime('%Y-%m-%d %H:%M:%S')
+        desc = product.desc
+        desc += '\n' + created_at + '에 등록된 글입니다.'
         product.desc = desc
         product.save()
+        return product
 
     class Meta:
         model = Product
