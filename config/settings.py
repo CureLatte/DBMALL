@@ -43,6 +43,11 @@ INSTALLED_APPS = [
     'blog',
     'homework',
     'product',
+    'payment',
+    'coupon',
+    'point',
+    'drf_yasg',
+    'book',
 ]
 
 MIDDLEWARE = [

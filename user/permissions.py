@@ -11,3 +11,23 @@ class RegistedMoreThanAWeekUser(BasePermission):
 
     def has_permission(self, request, view):
         return bool(request.user and request.user.join_date < (timezone.now() - timedelta(days=3)))
+
+
+class CheckStaffUser(BasePermission):
+    """
+    직원 계정 권한
+    """
+    message = '직원이 아닙니다. '
+
+    def has_permission(self, request, view):
+        return bool(request.user.is_staff)
+
+
+class CheckLoginUser(BasePermission):
+    """
+    회원 계정 권한
+    """
+    message = '회원이 아닙니다..'
+
+    def has_permission(self, request, view):
+        return bool(request.user)
