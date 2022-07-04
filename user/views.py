@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -8,8 +9,14 @@ from user.models import User, UserProfile
 from user.serializer import UserSerializer
 
 
+@swagger_auto_schema(tag='유저_회원 가입')
 class UserSignupView(APIView):
     def post(self, request):
+        """
+        로그인 했을 때
+        :param request:
+        :return: Json
+        """
         # 응답 data set
         data = {
             'message': 'Fail',
