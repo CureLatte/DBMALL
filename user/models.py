@@ -70,6 +70,7 @@ class User(AbstractBaseUser):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile = models.ImageField(blank=True, null=True)
     bio = models.CharField(max_length=1000)
 
 

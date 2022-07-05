@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'point',
     'drf_yasg',
     'book',
+    'bucket',
+    'order',
 ]
 
 MIDDLEWARE = [

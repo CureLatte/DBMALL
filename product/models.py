@@ -1,5 +1,5 @@
 from django.db import models
-
+from book.models import Book
 from user.models import User
 
 
@@ -14,16 +14,20 @@ class Event(models.Model):
     activate = models.BooleanField(default=False)
 
 
+class Category(models.Model):
+    subject = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return f'{self.subject}'
+
+
 class Product(models.Model):
     # 작성자, 썸네일, 상품 설명, 등록일자, 노출 종료 일자, 가격, 수정 일자, 활성화 여부
-    writer = models.ForeignKey(User, on_delete=models.CASCADE)
-    thumbnail = models.ImageField(upload_to="product", default='/templates/static/image/default.jpg')
-    desc = models.CharField(max_length=1000)
-    expose_end = models.DateTimeField()
-    cost = models.IntegerField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    update_at = models.DateTimeField(auto_now=True)
-    active = models.BooleanField(default=False)
+    book = models.OneToOneField(Book, on_delete=models.CASCADE)
+    cost = models.IntegerField(default=0)
+    code = models.CharField(default="000000")
+    category = models.OneToOneField(Category, on_delete=models.SET_NULL)
+    is_active = models.BooleanField(default=False)
 
 
 class Review(models.Model):
@@ -33,3 +37,8 @@ class Review(models.Model):
     content = models.TextField(default='')
     grade = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Like(models.Model):
+    writer = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)

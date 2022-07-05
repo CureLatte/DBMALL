@@ -5,11 +5,7 @@ from django.db import models
 from user.models import User
 
 
-class Category(models.Model):
-    subject = models.CharField(max_length=1000)
 
-    def __str__(self):
-        return f'{self.subject}'
 
 
 class Article(models.Model):
