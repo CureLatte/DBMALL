@@ -64,6 +64,7 @@ class UserSignupView(APIView):
             return JsonResponse(data)
 
 
+@swagger_auto_schema(tags=['유저-로그인'])
 class UserLoginView(APIView):
     # post 요청
     def post(self, request):
