@@ -20,6 +20,8 @@ class UserSignupView(APIView):
         serializer = UserSignUpSerializer(data=request.data)
         if serializer.is_valid() is False:
             return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        return JsonResponse({'message': 'success'}, status=status.HTTP_200_OK)
 
 
 @swagger_auto_schema(tags=['유저_로그인'])
