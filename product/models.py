@@ -25,8 +25,8 @@ class Product(models.Model):
     # 작성자, 썸네일, 상품 설명, 등록일자, 노출 종료 일자, 가격, 수정 일자, 활성화 여부
     book = models.OneToOneField(Book, on_delete=models.CASCADE)
     cost = models.IntegerField(default=0)
-    code = models.CharField(default="000000")
-    category = models.OneToOneField(Category, on_delete=models.SET_NULL)
+    code = models.CharField(max_length=100, default="000000")
+    category = models.OneToOneField(Category, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=False)
 
 

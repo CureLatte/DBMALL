@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from blog.serializer import ArticleSerializer
+# from blog.serializer import ArticleSerializer
 from user.models import User, UserProfile
 
 
@@ -12,7 +12,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     userprofile = UserProfileSerializer()
-    article_set = ArticleSerializer(many=True)
+    # article_set = ArticleSerializer(many=True)
 
     class Meta:
         model = User

@@ -4,7 +4,6 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from blog.models import Article
 from user.models import User, UserProfile
 from user.serializer import UserSerializer
 
@@ -64,7 +63,7 @@ class UserSignupView(APIView):
             return JsonResponse(data)
 
 
-@swagger_auto_schema(tags=['유저-로그인'])
+@swagger_auto_schema(tags=['유저_로그인'])
 class UserLoginView(APIView):
     # post 요청
     def post(self, request):
@@ -89,54 +88,54 @@ class UserLoginView(APIView):
         logout(request)
         return JsonResponse({'message': f'{user.username}님이 Logout했습니다. '})
 
-
-# 사용자가 작성한 프로필, 게시글 보기
-class UserMyPageView(APIView):
-    # GET 요청
-    def get(self, request):
-        # 로그인 된 사용자
-        user = request.user
-
-        # 로그인 된 사용자가 아닐 경우
-        if user.is_authenticated is False:
-            fail_data = {
-                'message' : 'User does not authenticated'
-            }
-            return JsonResponse(fail_data)
-
-        # 사용자가 작성한 프로필, 게시글 조회
-        profile = UserProfile.objects.filter(user=user)
-        if len(profile) == 0:
-            profile_bio = None
-        else:
-            profile_bio = profile[0].bio
-
-        articles = Article.objects.filter(writer=user)
-
-        # 조회한 게시글 정리 로직
-        articles_data = {}
-
-        for idx, article in enumerate(articles):
-            category_list = article.category.all()
-            category_data = []
-            for category in category_list:
-                category_data.append(category.subject)
-
-            data = {
-                'content' : article.content,
-                'category': category_data,
-            }
-
-            articles_data[idx] = data
-
-        # 결과 응답
-        response_data = {
-            'username': user.username,
-            'bio' : profile_bio,
-            'articles': articles_data,
-        }
-
-        return JsonResponse(response_data)
+#
+# # 사용자가 작성한 프로필, 게시글 보기
+# class UserMyPageView(APIView):
+#     # GET 요청
+#     def get(self, request):
+#         # 로그인 된 사용자
+#         user = request.user
+#
+#         # 로그인 된 사용자가 아닐 경우
+#         if user.is_authenticated is False:
+#             fail_data = {
+#                 'message' : 'User does not authenticated'
+#             }
+#             return JsonResponse(fail_data)
+#
+#         # 사용자가 작성한 프로필, 게시글 조회
+#         profile = UserProfile.objects.filter(user=user)
+#         if len(profile) == 0:
+#             profile_bio = None
+#         else:
+#             profile_bio = profile[0].bio
+#
+#         articles = Article.objects.filter(writer=user)
+#
+#         # 조회한 게시글 정리 로직
+#         articles_data = {}
+#
+#         for idx, article in enumerate(articles):
+#             category_list = article.category.all()
+#             category_data = []
+#             for category in category_list:
+#                 category_data.append(category.subject)
+#
+#             data = {
+#                 'content' : article.content,
+#                 'category': category_data,
+#             }
+#
+#             articles_data[idx] = data
+#
+#         # 결과 응답
+#         response_data = {
+#             'username': user.username,
+#             'bio' : profile_bio,
+#             'articles': articles_data,
+#         }
+#
+#         return JsonResponse(response_data)
 
 
 class UserDetailView(APIView):

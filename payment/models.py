@@ -20,10 +20,9 @@ class PaymentStatus(models.Model):
 
 
 class MethodPayment(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
-    card = models.OneToOneField(Card, on_delete=models.SET_NULL, blank=True)
-    account = models.OneToOneField(Card, on_delete=models.SET_NULL, blank=True)
-    cash = models.OneToOneField(Card, on_delete=models.SET_NULL, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    card = models.OneToOneField(Card, null=True, blank=True, on_delete=models.CASCADE)
+    account = models.OneToOneField(Account, on_delete=models.CASCADE, blank=True)
 
 
 class Payment(models.Model):
